@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -16,6 +17,8 @@ func ErrMiddleware() echo.MiddlewareFunc {
 			if err == nil {
 				return nil
 			}
+
+			err = errors.Cause(err)
 
 			// Check error based on error type
 			switch err.(type) {
