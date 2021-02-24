@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
 )
 
 // ErrMiddleware returns custom middleware for Echo that generate HTTP error response
