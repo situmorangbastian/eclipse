@@ -18,6 +18,16 @@ func ErrMiddleware() echo.MiddlewareFunc {
 				return nil
 			}
 
+			if e, ok := err.(*echo.HTTPError); ok {
+				switch e.Code {
+				case http.StatusNotFound:
+				default:
+					log.Error(e.Message)
+				}
+
+				return echo.NewHTTPError(e.Code, e.Message)
+			}
+
 			err = errors.Cause(err)
 
 			// Check error based on error type
