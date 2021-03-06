@@ -19,9 +19,7 @@ func ErrMiddleware() echo.MiddlewareFunc {
 			}
 
 			if e, ok := err.(*echo.HTTPError); ok {
-				switch e.Code {
-				case http.StatusNotFound:
-				default:
+				if e.Code >= http.StatusInternalServerError {
 					log.Error(e.Message)
 				}
 
