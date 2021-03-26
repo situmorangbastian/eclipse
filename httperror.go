@@ -38,7 +38,7 @@ func ErrMiddleware() echo.MiddlewareFunc {
 				return echo.NewHTTPError(http.StatusConflict, err.Error())
 			default:
 				log.Error(err)
-				return echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+				return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
 			}
 		}
 	}
