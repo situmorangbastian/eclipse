@@ -1,39 +1,45 @@
 package eclipse
 
-import "fmt"
+import (
+	"net/http"
 
-// ConstraintError represents a custom error for a contstraint things.
-type ConstraintError string
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
+	"github.com/pkg/errors"
+)
 
-func (e ConstraintError) Error() string {
-	return string(e)
-}
+// Error returns custom middleware for Echo that generate HTTP error response
+// with HTTP status code.
+func Error() echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			err := next(c)
+			if err == nil {
+				return nil
+			}
 
-// ConstraintErrorf constructs ConstraintError with formatted message.
-func ConstraintErrorf(format string, a ...interface{}) ConstraintError {
-	return ConstraintError(fmt.Sprintf(format, a...))
-}
+			if e, ok := err.(*echo.HTTPError); ok {
+				if e.Code >= http.StatusInternalServerError {
+					log.Error(e.Message)
+				}
 
-// NotFoundError represents a custom error for not found.
-type NotFoundError string
+				return echo.NewHTTPError(e.Code, e.Message)
+			}
 
-func (e NotFoundError) Error() string {
-	return string(e)
-}
+			err = errors.Cause(err)
 
-// NotFoundErrorf constructs NotFoundError with formatted message.
-func NotFoundErrorf(format string, a ...interface{}) NotFoundError {
-	return NotFoundError(fmt.Sprintf(format, a...))
-}
-
-// ConflictError represents a custom error for conflict.
-type ConflictError string
-
-func (e ConflictError) Error() string {
-	return string(e)
-}
-
-// ConflictErrorf constructs ConflictError with formatted message.
-func ConflictErrorf(format string, a ...interface{}) ConflictError {
-	return ConflictError(fmt.Sprintf(format, a...))
+			// Check error based on error type
+			switch err.(type) {
+			case ConstraintError:
+				return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+			case NotFoundError:
+				return echo.NewHTTPError(http.StatusNotFound, err.Error())
+			case ConflictError:
+				return echo.NewHTTPError(http.StatusConflict, err.Error())
+			default:
+				log.Error(err)
+				return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
+			}
+		}
+	}
 }
