@@ -3,8 +3,8 @@ package eclipse
 import (
 	"net/http"
 
+	log "github.com/golang/glog"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/gommon/log"
 	"github.com/pkg/errors"
 )
 
