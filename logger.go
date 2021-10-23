@@ -32,19 +32,19 @@ func (hook *WriterHook) Levels() []log.Level {
 }
 
 // SetupLogs initialize logger.
-func SetupLogs(levelStr string) {
+func SetupLogs(levelLog string) {
 	log.SetFormatter(&log.JSONFormatter{
 		PrettyPrint: true,
 	})
 	log.SetReportCaller(true)
 
-	if levelStr == "" {
-		levelStr = "info"
+	if levelLog == "" {
+		levelLog = "info"
 	}
 
-	level, err := log.ParseLevel(levelStr)
+	level, err := log.ParseLevel(levelLog)
 	if err != nil {
-		log.Fatal("levelStr is not well-set:", level)
+		log.Fatal("levelLog is not well-set")
 	}
 	log.SetLevel(level)
 
