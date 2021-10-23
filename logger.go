@@ -39,7 +39,7 @@ func SetupLogs(levelStr string) {
 	log.SetReportCaller(true)
 
 	if levelStr == "" {
-		levelStr = "debug"
+		levelStr = "info"
 	}
 
 	level, err := log.ParseLevel(levelStr)
