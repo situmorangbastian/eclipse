@@ -3,9 +3,9 @@ package eclipse
 import (
 	"net/http"
 
-	log "github.com/golang/glog"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
 // Error returns custom middleware for Echo that generate HTTP error response
