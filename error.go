@@ -2,6 +2,7 @@ package eclipse
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
@@ -23,7 +24,7 @@ func Error() echo.MiddlewareFunc {
 					log.Error(e.Message)
 				}
 
-				return echo.NewHTTPError(e.Code, e.Message)
+				return echo.NewHTTPError(e.Code, strings.ToLower(e.Message.(string)))
 			}
 
 			err = errors.Cause(err)
