@@ -27,10 +27,8 @@ func Error() echo.MiddlewareFunc {
 				return echo.NewHTTPError(e.Code, strings.ToLower(e.Message.(string)))
 			}
 
-			err = errors.Cause(err)
-
 			// Check error based on error type
-			switch err.(type) {
+			switch errors.Cause(err).(type) {
 			case ConstraintError:
 				return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 			case NotFoundError:
