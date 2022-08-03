@@ -9,8 +9,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// Error returns custom middleware for Echo that generate HTTP error response
-// with HTTP status code.
 func Error() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
