@@ -28,11 +28,11 @@ func Error() echo.MiddlewareFunc {
 			// Check error based on error type
 			switch errors.Cause(err).(type) {
 			case ConstraintError:
-				return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+				return echo.NewHTTPError(http.StatusBadRequest, errors.Cause(err).Error())
 			case NotFoundError:
-				return echo.NewHTTPError(http.StatusNotFound, err.Error())
+				return echo.NewHTTPError(http.StatusNotFound, errors.Cause(err).Error())
 			case ConflictError:
-				return echo.NewHTTPError(http.StatusConflict, err.Error())
+				return echo.NewHTTPError(http.StatusConflict, errors.Cause(err).Error())
 			default:
 				log.Error(err)
 				return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
